@@ -21,7 +21,7 @@ if(isset($_SESSION['userUniqueID'])){
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@300;400&family=Noto+Serif:ital,wght@1,700&family=Patua+One&family=Volkhov:ital@1&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/custom_style.css?v=2"/>
+    <link rel="stylesheet" href="../css/custom_style.css?v=3"/>
 
     <style>
         label{
@@ -38,7 +38,7 @@ if(isset($_SESSION['userUniqueID'])){
                 <div class="login-panel" id="loginPanel">
                     <div class="sidepanel">
                             <img src="../assets/img/login.png" alt="">
-                            <h5 class="text-center mt-5">Lorem Impsum</h5>
+                            <h5 class="text-center mt-5">Senior Citizen System</h5>
                     </div>
                     <div class="form-panel-login ">
                         
@@ -56,7 +56,7 @@ if(isset($_SESSION['userUniqueID'])){
                             </div>
 
                         <form action="" class="text-center" style="width: 70%;" id="seniorLogin">
-                            <!-- <h4 class="mb-5 text-center">Login</h4> -->
+                            <h4 class="mb-5 text-center">Login</h4>
                             <input type="text" name="username" placeholder="Username" class="input-fields-custom ">
                             <input type="password" name="password" placeholder="Password" class="input-fields-custom" style=" margin-top: 20px;"><br>
                             <a id="forgotPasswordBtn" class="forgotPass text-start" style="cursor: pointer;">Forgot Password</a>
@@ -73,11 +73,7 @@ if(isset($_SESSION['userUniqueID'])){
 
 
 
-            <div class="login-panel"  id="RegisterPanel"  style="display: none;">
-                <div class="sidepanel">
-                        <img src="../assets/img/login.png" alt="">
-                        <h5 class="text-center mt-5">Lorem Impsum</h5>
-                </div>
+            <div class="login-panel"  id="RegisterPanel"  style="display: none; position: absolute; top:50%; left: 50%; transform: translate(-50%,-50%);">
                 <form action="" id="seniorReg">
                     <div class="form-panel-login p-4" >
                         <h4 class="text-start mt-1 mb-2">Register</h4>
@@ -172,7 +168,7 @@ if(isset($_SESSION['userUniqueID'])){
                     </div>
 
                     </div>
-                    <input type="hidden" name="SeniorRegistration">
+                    <input type="hidden" name="SeniorRegistrationForm">
                 </form>
         </div>
     </div>
@@ -237,6 +233,7 @@ if(isset($_SESSION['userUniqueID'])){
                     url: "../Controller/SeniorCitizenFunction.php",
                     data: formData,
                     success: function(data){
+                        alert(data)
                         if(data == "NotMatch"){
                             Swal.fire(
                             'Failed!',
@@ -245,12 +242,22 @@ if(isset($_SESSION['userUniqueID'])){
                             )
                         }
                         else{
-                            Swal.fire(
-                            'Success',
-                            'Account Registration Successfully!',
-                            'success'
-                            )
+
                             $("#seniorReg")[0].reset();
+                            
+                            Swal.fire({
+                            title: 'Success',
+                            text: "Account Registration Successfully!",
+                            icon: 'success',
+                            showCancelButton: false,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Okay'
+                            }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href="login.php";
+                            }
+                            })
                         }
                     },
                     cache: false,

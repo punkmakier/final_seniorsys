@@ -30,21 +30,26 @@
 
         public function showAllSeniorAccount(){
             $con = $this->openConnection();
-            $sqlQuery = "SELECT * FROM srpersonalinfo";
+            $sqlQuery = "SELECT sr.* FROM `reqburialasst` as r INNER JOIN `srpersonalinfo` as sr ON r.`UserUniqueID`= sr.`UserUniqueID` WHERE r.BurStatus = 'N/A'";
             $stmt = $con->prepare($sqlQuery);
             $stmt->execute();
             if($stmt->rowCount() > 0){
                 while($res = $stmt->fetch()){
+                    $bday = substr($res['Birthdate'],5,2);
+                    $monthNum  = $bday;
+                    $dateObj   = DateTime::createFromFormat('!m', $monthNum);
+                    $monthName = $dateObj->format('F'); // March
                     echo "<tr>
                     <td class='text-center'>".$res['FirstName']." ".substr($res['MiddleName'],0,1).". ".$res['LastName']."</td>
-                    <td class='text-center d-none'>$res[UserUniqueID]</td>
                     <td class='text-center'>$res[Address]</td>
                     <td class='text-center'>$res[Age]</td>
                     <td class='text-center'>$res[Gender]</td>
                     <td class='text-center'>$res[Status]</td>
+                    <td class='text-center'>".$monthName."</td>
+                    <td class='text-center'>$res[PensionerStatus]</td>
                     <td class='text-center'>
                         <a class='btn btn-primary viewSelectedSr' id='$res[UserUniqueID]'><i class='fa-solid fa-eye'></i></a> 
-                        <a class='btn btn-danger deleteThisSrCitizenAcct'><i class='fa-solid fa-trash'></i></a>
+                        <a class='btn btn-danger deleteThisSrCitizenAcct' id='$res[UserUniqueID]'><i class='fa-solid fa-trash'></i></a>
                     </td>
                 </tr>";
                 }

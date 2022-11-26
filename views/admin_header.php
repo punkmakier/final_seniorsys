@@ -6,11 +6,13 @@
     require_once '../Model/AccountRequested.php';
     require_once '../Model/ShowMessage.php';
     require_once '../Model/AdminAccount.php';
+    require_once '../Model/Services.php';
 
    
     $showDataSeniorRequest = new AccountRequested;
     $showMessage = new ShowMessage;
     $showAdmin = new AdminAccount;
+    $services = new Services;
     $empID = $_SESSION['empID'];
     // $sessionID = $_SESSION['userUniqueID'];
 
@@ -43,14 +45,14 @@
           <a class="sub-btn" href="admindashboard.php" id="dashboardMenu"><i class="fa-solid fa-house-user"></i>&nbsp;&nbsp;Dashboard</a>
         </div>
         <div class="item" id="adminTools">
-          <a class="sub-btn" href="accountrequest.php"><i class="fa-solid fa-screwdriver-wrench"></i>&nbsp;&nbsp; Account Request</a>
-        </div>
-        <div class="item" id="adminTools">
           <a class="sub-btn"><i class="fa-solid fa-gears"></i>&nbsp;&nbsp; Manage Users <i class="fa-solid fa-caret-right dropdown-icon"></i></a>
           <div class="sub-menu">
             <a  class="sub-item" href="admins.php" ><i class="fa-solid fa-sack-dollar"></i>&nbsp;&nbsp;Admin/s</a>
             <a  class="sub-item" href="seniorcitizen.php" class="btn btn-primary"><i class="fa-solid fa-address-card"></i>&nbsp;&nbsp;Senior Citizens<small style="color: red;"></small></a>
-        </div>
+            <a class="sub-btn" href="accountrequest.php"><i class="fa-solid fa-screwdriver-wrench"></i>&nbsp;&nbsp; Account Request</a>
+            <a  class="sub-item" href="disease.php"><i class="fa-solid fa-person"></i>&nbsp;&nbsp;Disease</a>
+
+          </div>
         </div>
         <div class="item" id="adminTools">
           <a class="sub-btn"><i class="fa-solid fa-screwdriver-wrench"></i>&nbsp;&nbsp; Manage Services <i class="fa-solid fa-caret-right dropdown-icon"></i></a>
@@ -58,7 +60,7 @@
             <a  class="sub-item" href="managepension.php"><i class="fa-solid fa-person"></i>&nbsp;&nbsp;Manage Pension</a>
             <a  class="sub-item" href="manageseniorid.php"><i class="fa-solid fa-gear"></i>&nbsp;&nbsp;Manage Senior ID</a>
             <a  class="sub-item" href="manageburialassistance.php"><i class="fa-solid fa-gear"></i>&nbsp;&nbsp;Manage Burial Asst.</a>
-        </div>
+          </div>
         </div>
         <div class="item" id="adminTools">
           <a class="sub-btn" href="adminaccount.php"><i class="fa-solid fa-screwdriver-wrench"></i>&nbsp;&nbsp; Account Settings</a>

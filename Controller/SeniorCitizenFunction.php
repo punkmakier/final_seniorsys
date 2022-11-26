@@ -8,11 +8,13 @@
     require_once '../Model/EmergencyContact.php';
     require_once '../Model/UserInfo.php';
     require_once '../Model/Message.php';
+    require_once '../Model/Services.php';
 
+    $services = new Services;
 
     
     // For Calling Function
-    if(isset($_POST['SeniorRegistration'])){
+    if(isset($_POST['SeniorRegistrationForm'])){
         SeniorRegistration();
     }
 
@@ -71,6 +73,143 @@
             echo "Error";
         }
     }
+    else if(isset($_POST['reqPensionTrigger'])){
+        $id = $_SESSION['userUniqueID'];
+
+        // Upload seniorID images
+        $senior_img_name = $_FILES['seniorID']['name'];
+        $senior_tmp_name = $_FILES['seniorID']['tmp_name'];
+
+        $senior_img_ext = pathinfo($senior_img_name, PATHINFO_EXTENSION);
+        $senior_img_ex_lc = strtolower($senior_img_ext);
+
+        $senior_new_name_image = uniqid("SeniorID-",true).'.'.$senior_img_ex_lc;
+
+        $seniorID_img_upload_path = "../assets/SeniorID/".$senior_new_name_image;
+
+       // Upload seniorID images
+       $signatures_img_name = $_FILES['signatures']['name'];
+       $signatures_tmp_name = $_FILES['signatures']['tmp_name'];
+
+       $signatures_img_ext = pathinfo($signatures_img_name, PATHINFO_EXTENSION);
+       $signatures_img_ex_lc = strtolower($signatures_img_ext);
+
+       $signatures_new_name_image = uniqid("Signatures-",true).'.'.$signatures_img_ex_lc;
+
+       $signatures_img_upload_path = "../assets/Signatures/".$signatures_new_name_image;
+   
+       if(empty($_FILES['signatures']) || empty($_FILES['seniorID'])){
+        echo "Required";
+       }
+       
+       else{
+            if($services->uploadReqestPension($id,$senior_new_name_image,$signatures_new_name_image)){
+                move_uploaded_file($senior_tmp_name, $seniorID_img_upload_path);
+                move_uploaded_file($signatures_tmp_name, $signatures_img_upload_path);
+                echo "Success";
+            }
+            else{
+                echo "Failed";
+            }
+
+       }
+    }
+
+    else if(isset($_POST['reqSeniorIDTrigger'])){
+        $id = $_SESSION['userUniqueID'];
+
+        // Upload seniorID images
+        $pictureCopy_img_name = $_FILES['pictureCopy']['name'];
+        $pictureCopy_tmp_name = $_FILES['pictureCopy']['tmp_name'];
+
+        $pictureCopy_img_ext = pathinfo($pictureCopy_img_name, PATHINFO_EXTENSION);
+        $pictureCopy_img_ex_lc = strtolower($pictureCopy_img_ext);
+
+        $pictureCopy_new_name_image = uniqid("PictureCopy-",true).'.'.$pictureCopy_img_ex_lc;
+
+        $pictureCopy_img_upload_path = "../assets/PictureCopy/".$pictureCopy_new_name_image;
+
+       // Upload seniorID images
+       $validCert_img_name = $_FILES['validCert']['name'];
+       $validCert_tmp_name = $_FILES['validCert']['tmp_name'];
+
+       $validCert_img_ext = pathinfo($validCert_img_name, PATHINFO_EXTENSION);
+       $validCert_img_ex_lc = strtolower($validCert_img_ext);
+
+       $validCert_new_name_image = uniqid("validCert-",true).'.'.$validCert_img_ex_lc;
+
+       $validCert_img_upload_path = "../assets/ValidCertificate/".$validCert_new_name_image;
+
+       echo $validCert_new_name_image . " ". $pictureCopy_new_name_image;
+
+ 
+        if($services->uploadReqestSeniorID($id,$pictureCopy_new_name_image,$validCert_new_name_image)){
+            move_uploaded_file($pictureCopy_tmp_name, $pictureCopy_img_upload_path);
+            move_uploaded_file($validCert_tmp_name, $validCert_img_upload_path);
+            echo "Success";
+        }
+        else{
+            echo "Failed";
+        }
+       
+    }
+
+
+
+
+    else if(isset($_POST['reqBurialAsstTrigger'])){
+        $id = $_SESSION['userUniqueID'];
+        $cod = $_POST['bur_cod'];
+        // Upload seniorID images
+        $bur_seniorID_img_name = $_FILES['bur_srID']['name'];
+        $bur_seniorID_tmp_name = $_FILES['bur_srID']['tmp_name'];
+
+        $bur_seniorID_img_ext = pathinfo($bur_seniorID_img_name, PATHINFO_EXTENSION);
+        $bur_seniorID_img_ex_lc = strtolower($bur_seniorID_img_ext);
+
+        $bur_seniorID_new_name_image = uniqid("BurialAsstSeniorID-",true).'.'.$bur_seniorID_img_ex_lc;
+
+        $bur_seniorID_img_upload_path = "../assets/BurialSeniorID/".$bur_seniorID_new_name_image;
+
+       // Upload seniorID images
+       $bur_deathCert_img_name = $_FILES['bur_deathCert']['name'];
+       $bur_deathCert_tmp_name = $_FILES['bur_deathCert']['tmp_name'];
+
+       $bur_deathCert_img_ext = pathinfo($bur_deathCert_img_name, PATHINFO_EXTENSION);
+       $bur_deathCert_img_ex_lc = strtolower($bur_deathCert_img_ext);
+
+       $bur_deathCert_new_name_image = uniqid("BurialAsstCOD-",true).'.'.$bur_deathCert_img_ex_lc;
+
+       $bur_deathCert_img_upload_path = "../assets/BurialCOD/".$bur_deathCert_new_name_image;
+
+ 
+        if($services->uploadReqestBurial($id,$bur_seniorID_new_name_image,$bur_deathCert_new_name_image,$cod)){
+            move_uploaded_file($bur_seniorID_tmp_name, $bur_seniorID_img_upload_path);
+            move_uploaded_file($bur_deathCert_tmp_name, $bur_deathCert_img_upload_path);
+            echo "Success";
+        }
+        else{
+            echo "Failed";
+        }
+       
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

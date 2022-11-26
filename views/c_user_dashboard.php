@@ -1,4 +1,10 @@
+<?php 
+error_reporting(0);
+ini_set('display_errors', 0);
+    include  '../Model/Pagination.php' ;
+    $paginate=new Pagination("announcement","userdashboard.php",1) ;
 
+?>
 <style>
     li{
         list-style-type: none;
@@ -15,9 +21,21 @@
 
     <div class="container-fluid mt-5 ps-lg-5 pe-lg-5 ">
         <h2 class="text-center" style="color: #1c3456;">Announcement</h2>
-        <h4><?php $snrAccountDetails->showLastAnnouncementTitle(); ?></h4>
-        <p class="mt-4"><?php $snrAccountDetails->showLastAnnouncementDescription(); ?></p>
-        <label class="mt-3"><b><?php $snrAccountDetails->showLastAnnouncementPostedBy(); ?> | <?php $snrAccountDetails->showLastAnnouncementPostedByPosition(); ?></b><br><small>Date Posted: <?php $snrAccountDetails->showLastAnnouncementDateCreated(); ?></small></label>
+
+        <?php   
+          foreach($paginate->getData() as $data){
+        ?>
+
+
+
+        <h4><?php echo $data["Title"] ?></h4>
+        <p class="mt-4"><?php echo $data["Description"] ?></p>
+        <label class="mt-3"><b><?php echo $data["PostedBy"] ?> | <?php echo $data["PostedByPosition"] ?></b><br><small>Date Posted: <?php echo $data["DateCreated"] ?></small></label>
+
+        <div class="mt-5 text-center">
+            <?php $paginate->paginate_links(); ?>
+        </div>
+        <?php }?>
 
         <div class="mt-5">
             <h3>OSCA Office Information</h3>

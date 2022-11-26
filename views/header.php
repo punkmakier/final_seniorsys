@@ -43,7 +43,7 @@
           <div class="sub-menu">
             <a  class="sub-item" type="button" data-bs-toggle="modal" data-bs-target="#pensionModal"><i class="fa-solid fa-sack-dollar"></i>&nbsp;&nbsp;Request Pension</a>
             <a  class="sub-item" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#seniorID"><i class="fa-solid fa-address-card"></i>&nbsp;&nbsp;Request Senior ID<small style="color: red;"></small></a>
-            <a  class="sub-item" type="button" class="btn btn-primary" ><i class="fa-solid fa-cross"></i>&nbsp;&nbsp;Request Burial<small style="color: red;"></small></a>
+            <a  class="sub-item" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#burialAsst"><i class="fa-solid fa-cross"></i>&nbsp;&nbsp;Request Burial<small style="color: red;"></small></a>
         </div>
         </div>
         <div class="item">
@@ -81,20 +81,22 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-
+      <form id="reqPensionForm">
       <div class="form-group mb-3">
             <label for="exampleInputEmail1" class="form-label"><b>Senior Citizen ID</b>&nbsp;<span style="color: red; font-weight: 600;">*</span></label><br>
-            <input type="file" class="form-control" id="inputGroupFile02">
+            <input type="file" class="form-control" id="inputGroupFile02" name="seniorID" required>
         </div>
         <div class="form-group mt-4">
             <label for="exampleInputEmail1" class="form-label"><b>Photocopy of senior ID with 3 specimen signatures</b>&nbsp;<span style="color: red; font-weight: 600;">*</span></label><br>
-            <input type="file" class="form-control" id="inputGroupFile02">
+            <input type="file" class="form-control" id="inputGroupFile02" name="signatures" required>
         </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="padding: 10px; ">Close</button>
-        <button type="button" class="btn btn-custom-default" style="width: 20%;">Submit</button>
+        <input type="submit" class="btn btn-custom-default" style="width: 20%;"id="requestPensionBTN">
       </div>
+      <input type="hidden" name="reqPensionTrigger">
+    </form>
     </div>
   </div>
 </div>
@@ -110,23 +112,65 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
+      <form id="reqSeniorIDForm">
 
       <div class="form-group mb-3">
             <label for="exampleInputEmail1" class="form-label"><b>1 copy of 2x2 Picture</b>&nbsp;<span style="color: red; font-weight: 600;">*</span></label><br>
-            <input type="file" class="form-control" id="inputGroupFile02">
+            <input type="file" class="form-control" id="inputGroupFile02" name="pictureCopy" required>
         </div>
         <div class="form-group mt-4">
             <label for="exampleInputEmail1" class="form-label"><b>Valid ID or Birth Certificate</b>&nbsp;<span style="color: red; font-weight: 600;">*</span></label><br>
-            <input type="file" class="form-control" id="inputGroupFile02">
+            <input type="file" class="form-control" id="inputGroupFile02" name="validCert" required>
         </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="padding: 10px; ">Close</button>
-        <button type="button" class="btn btn-custom-default" style="width: 20%;">Submit</button>
+        <input type="submit" class="btn btn-custom-default" style="width: 20%;">
       </div>
     </div>
+    <input type="hidden" name="reqSeniorIDTrigger">
+    </form>
   </div>
 </div>
+
+
+<!-- Burial Asst Modal -->
+<div class="modal fade" id="burialAsst" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Request Burial Assistance</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      <form id="reqBurialForm">
+
+      <div class="form-group mb-3">
+            <label for="exampleInputEmail1" class="form-label"><b>Senior ID</b>&nbsp;<span style="color: red; font-weight: 600;">*</span></label><br>
+            <input type="file" class="form-control" id="inputGroupFile02" name="bur_srID" required>
+        </div>
+        <div class="form-group mt-4">
+            <label for="exampleInputEmail1" class="form-label"><b>Death Certificate</b>&nbsp;<span style="color: red; font-weight: 600;">*</span></label><br>
+            <input type="file" class="form-control" id="inputGroupFile02" name="bur_deathCert"  required>
+        </div>
+        <div class="form-group mt-4">
+          <label for="exampleInputEmail1" class="form-label" style="font-size: 0.9rem;"><b>Cause of Death</b>&nbsp;<span style="color: red; font-weight: 600;">*</span></label><br>
+          <input type="text" class="form-control mb-4" name="bur_cod"  required>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="padding: 10px; ">Close</button>
+        <input type="submit" class="btn btn-custom-default" style="width: 20%;">
+      </div>
+    </div>
+    <input type="hidden" name="reqBurialAsstTrigger">
+    </form>
+  </div>
+</div>
+
+
+
+
 
 
 
@@ -165,6 +209,146 @@
 <script>
   $(document).ready(function(){
     
+    $("#reqBurialForm").submit(function(e){
+      e.preventDefault();
+      var formData = new FormData(this);
+
+
+      $.ajax({
+                type: "POST",
+                url: "../Controller/SeniorCitizenFunction.php",
+                data: formData,
+                success: function(response){
+                    if(response == "Failed"){
+                            Swal.fire(
+                            'Failed!',
+                            'There\'\ s something wrong...',
+                            'error'
+                            )
+                    }
+                    else if(response == "Required"){
+                      Swal.fire(
+                            'Failed!',
+                            'All fields are required.',
+                            'error'
+                            )
+                    }
+                    else{
+                            Swal.fire({
+                            title: 'Success',
+                            text: "Please wait for admin response.",
+                            icon: 'success',
+                            showCancelButton: false,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Okay'
+                            }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.reload();
+                            }
+                            })
+                    }
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            })
+
+
+
+
+    })
+
+    $("#reqPensionForm").submit(function(e){
+      e.preventDefault();
+            var formData = new FormData(this);
+            $.ajax({
+                type: "POST",
+                url: "../Controller/SeniorCitizenFunction.php",
+                data: formData,
+                success: function(response){
+                    if(response == "Failed"){
+                            Swal.fire(
+                            'Failed!',
+                            'There\'\ s something wrong...',
+                            'error'
+                            )
+                    }
+                    else if(response == "Required"){
+                      Swal.fire(
+                            'Failed!',
+                            'All fields are required.',
+                            'error'
+                            )
+                    }
+                    else{
+                            Swal.fire({
+                            title: 'Success',
+                            text: "Please wait for admin response.",
+                            icon: 'success',
+                            showCancelButton: false,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Okay'
+                            }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.reload();
+                            }
+                            })
+                    }
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            })
+    })
+
+    
+    $("#reqSeniorIDForm").submit(function(e){
+      e.preventDefault();
+            var formData = new FormData(this);
+            $.ajax({
+                type: "POST",
+                url: "../Controller/SeniorCitizenFunction.php",
+                data: formData,
+                success: function(response){
+                    if(response == "Failed"){
+                            Swal.fire(
+                            'Failed!',
+                            'There\'\ s something wrong...',
+                            'error'
+                            )
+                    }
+                    else if(response == "Required"){
+                      Swal.fire(
+                            'Failed!',
+                            'All fields are required.',
+                            'error'
+                            )
+                    }
+                    else{
+                            Swal.fire({
+                            title: 'Success',
+                            text: "Please wait for admin response.",
+                            icon: 'success',
+                            showCancelButton: false,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Okay'
+                            }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.reload();
+                            }
+                            })
+                    }
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            })
+    })
+
+
 
     if($("#accountStatusCheck").val() == "Unverified"){
         $("#Services").css("display","none");

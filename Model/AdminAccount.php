@@ -13,14 +13,13 @@ session_start();
                 while($res = $stmt->fetch()){
                     echo "<tr>
                     <td class='text-center'>".$res['FirstName']." ".substr($res['MiddleName'],0,1).". ".$res['LastName']."</td>
-                    <td class='text-center d-none'>$res[EmpID]</td>
                     <td class='text-center'>$res[Username]</td>
                     <td class='text-center'>$res[EmpID]</td>
                     <td class='text-center'>$res[Email]</td>
                     <td class='text-center'>$res[PhoneNo]</td>
                     <td class='text-center'>$res[Position]</td>
                     <td class='text-center'>
-                        <a class='btn btn-danger deleteAdmin'><i class='fa-solid fa-trash'></i></a>
+                        <a class='btn btn-danger deleteAdmin' id='$res[EmpID]'><i class='fa-solid fa-trash'></i></a>
                     </td>
                 </tr>";
                 }
@@ -102,12 +101,12 @@ session_start();
         // MiddleName2
         public function showAdminMiddleName2($empid){
             $con = $this->openConnection();
-            $sqlQuery = "SELECT `LastName` FROM `admininfo` WHERE `EmpID`='$empid'";
+            $sqlQuery = "SELECT `MiddleName` FROM `admininfo` WHERE `EmpID`='$empid'";
             $stmt = $con->prepare($sqlQuery);
             $stmt->execute();
             if($stmt->rowCount() > 0){
                 while($res = $stmt->fetch()){
-                    echo substr($res['LastName'],0,1);
+                    echo substr($res['MiddleName'],0,1);
                 }
                 return true;
             }

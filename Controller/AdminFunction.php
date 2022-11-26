@@ -4,7 +4,9 @@
     require_once '../Model/AdminAccount.php';
     require_once '../Model/AddAnnouncement.php';
     require_once '../Model/AccountRequested.php';
+    require_once '../Model/Services.php';
 
+    $services = new Services;
 
 
     if(isset($_POST['addAdminAccount'])){
@@ -43,8 +45,57 @@
         viewSrCitizenInfoFunc();
     }
 
-    
-    
+    else if(isset($_POST['approveSelectedBurialAsst'])){
+       $id = $_POST['id_item_select'];
+       if($services->approveBurialReq($id)){
+            echo "Success";
+       }else{
+        echo "Failed";
+       }
+    }
+
+    else if(isset($_POST['disapproveSelectedBurialAsst'])){
+        $id = $_POST['id_item_disapprove'];
+        if($services->disapproveBurialReq($id)){
+             echo "Success";
+        }else{
+         echo "Failed";
+        }
+     }
+
+     else if(isset($_POST['approveSelectedPension'])){
+        $id = $_POST['id_item_pensionReq'];
+        if($services->approvePensioReq($id)){
+             echo "Success";
+        }else{
+         echo "Failed";
+        }
+     }
+     else if(isset($_POST['disapproveSelectedPension'])){
+        $id = $_POST['id_item_pensionReq'];
+        if($services->disapprovePensioReq($id)){
+             echo "Success";
+        }else{
+         echo "Failed";
+        }
+     }
+     else if(isset($_POST['approveSelectedSeniorID'])){
+        $id = $_POST['id_item_seniorIDReq'];
+        if($services->approveSeniorIDReq($id)){
+             echo "Success";
+        }else{
+         echo "Failed";
+        }
+     }
+
+     else if(isset($_POST['disapproveSelectedSeniorID'])){
+        $id = $_POST['id_item_seniorIDReq'];
+        if($services->disapproveSeniorIDReq($id)){
+             echo "Success";
+        }else{
+         echo "Failed";
+        }
+     }
 
     function addAdminAccountFunc(){
         $lname = $_POST['lname'];
@@ -200,7 +251,7 @@
 
 
     function deleteSrSelectedFunc(){
-        $id = $_POST['selectedUserSrCitizen'];
+        $id = $_POST['id_item_select'];
 
         $admin = new AdminAccount;
         if($admin->deleteSrAccountSelected($id)){

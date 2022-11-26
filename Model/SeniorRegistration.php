@@ -49,6 +49,10 @@
                 $stmt4 = $con->prepare($sqlQuery4);
                 $stmt4->execute();
 
+                $sqlQuery5 = "INSERT INTO `reqburialasst` (`UserUniqueID`) VALUES('$this->UserUniqueID')";
+                $stmt5 = $con->prepare($sqlQuery5);
+                $stmt5->execute();
+                
                 return true;
             }
             else{

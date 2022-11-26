@@ -12,10 +12,12 @@
             <thead class="bg-dark text-white">
                 <tr>
                     <td class="text-center">Complete Name</td>
-                    <td class="text-center">Address</td>
+                    <td class="text-center">Barangay</td>
                     <td class="text-center">Age</td>
                     <td class="text-center">Gender</td>
-                    <td class="text-center">Status</td>
+                    <td class="text-center">Account Status</td>
+                    <td class="text-center">Birth Month</td>
+                    <td class="text-center">Pensioner Status</td>
                     <td class="text-center">Action</td>
                 </tr>
             </thead>
@@ -179,19 +181,8 @@
 
 
     $(".deleteThisSrCitizenAcct").on('click',function(){
-        $tr = $(this).closest('tr');
+        id_item = $(this).attr('id');
 
-
-
-            var row = $tr.children("td").map(function(){
-                return $(this).text();
-
-            }).get();
-
-
-        $("#selectedUserSrCitizen").val(row[1]);
-
-        var formData = $("#selectedUserSrCitizenForm").serialize()+"&deleteSrSelected=deleteSrSelected";
         Swal.fire({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
@@ -205,7 +196,7 @@
             $.ajax({
                 type: "POST",
                 url: "../Controller/AdminFunction.php",
-                data: formData,
+                data: {id_item_select : id_item,deleteSrSelected : "deleteSrSelected"},
                 success: function(response){
                     Swal.fire({
                     title: 'Success',
