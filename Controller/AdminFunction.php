@@ -47,7 +47,8 @@
 
     else if(isset($_POST['approveSelectedBurialAsst'])){
        $id = $_POST['id_item_select'];
-       if($services->approveBurialReq($id)){
+       $date = $_POST['dateRelease'];
+       if($services->approveBurialReq($id,$date)){
             echo "Success";
        }else{
         echo "Failed";
@@ -65,7 +66,8 @@
 
      else if(isset($_POST['approveSelectedPension'])){
         $id = $_POST['id_item_pensionReq'];
-        if($services->approvePensioReq($id)){
+        $date = $_POST['dateReleasePension'];
+        if($services->approvePensioReq($id,$date)){
              echo "Success";
         }else{
          echo "Failed";
@@ -81,7 +83,8 @@
      }
      else if(isset($_POST['approveSelectedSeniorID'])){
         $id = $_POST['id_item_seniorIDReq'];
-        if($services->approveSeniorIDReq($id)){
+        $date = $_POST['dateReleaseSeniorID'];
+        if($services->approveSeniorIDReq($id,$date)){
              echo "Success";
         }else{
          echo "Failed";

@@ -40,7 +40,7 @@
             <div class="row">
                 <div class="col">
                     <div class="mb-2">
-                        <label for="exampleInputEmail1" class="form-label"><b>Address</b> (Tirahan)&nbsp;<span style="color: red; font-weight: 600;">*</span></label>
+                        <label for="exampleInputEmail1" class="form-label"><b>Barangay</b> (Tirahan)&nbsp;<span style="color: red; font-weight: 600;">*</span></label>
                         <input type="text" class="form-control" value="<?php $snrAccountDetails->SnrAddress($sessionID); ?>" name="updt_address">
                     </div>
                 </div>
@@ -255,8 +255,9 @@
                     <select class="form-select" aria-label="Default select example" name="healthissue">
                             <option selected hidden> <?php $snrAccountDetails->SnrHSCMIC($sessionID); ?></option>
                             <option value="Diabeties">Diabeties</option>
-                            <option value="Others">Others</option>
-                            <option value="...">...</option>
+                            <option value="Hypertension">Hypertension</option>
+                            <option value="Rayuma">Rayuma</option>
+                            <option value="Others">Others (Iba pa)</option>
                         </select>
                 </div>
             </div>
@@ -300,7 +301,7 @@
         <div class="row">
             <div class="col-7">
                 <div class="mb-2">
-                    <label for="exampleInputEmail1" class="form-label"><b>Address</b> (Tirahan)&nbsp;<span style="color: red; font-weight: 600;">*</span></label>
+                    <label for="exampleInputEmail1" class="form-label"><b>Barangay</b> (Tirahan)&nbsp;<span style="color: red; font-weight: 600;">*</span></label>
                     <input type="text" class="form-control" value="<?php $snrAccountDetails->SnrEmergencyContactAddress($sessionID); ?>" name="emer_address">
                 </div>
             </div>

@@ -38,6 +38,9 @@
         <div class="item">
           <a class="sub-btn" href="userdashboard.php" id="dashboardMenu"><i class="fa-solid fa-house-user"></i>&nbsp;&nbsp;Dashboard</a>
         </div>
+        <div class="item">
+          <a class="sub-btn" href="notifications.php" ><i class="fa-solid fa-bell"></i>&nbsp;&nbsp;Notification&nbsp;&nbsp; &nbsp;  <b style="padding: 3px;padding-right: 10px;padding-left: 10px; background-color: red; border-radius: 10px;"><?php $snrAccountDetails->showNotifcationTotal($sessionID); ?></b></a> 
+        </div>
         <div class="item" id="adminTools ">
           <a class="sub-btn" id="Services"><i class="fa-solid fa-gears"></i>&nbsp;&nbsp; Services <i class="fa-solid fa-caret-right dropdown-icon"></i></a>
           <div class="sub-menu">
@@ -47,7 +50,7 @@
         </div>
         </div>
         <div class="item">
-          <a type="button" data-bs-toggle="modal" data-bs-target="#sendMessage"><i class="fa-solid fa-message"></i>&nbsp;&nbsp;Message</a>
+          <a type="button" data-bs-toggle="modal" data-bs-target="#sendMessage"><i class="fa-solid fa-message"></i>&nbsp;&nbsp;Inquiries</a>
         </div>
 
         <div class="item" id="adminTools">

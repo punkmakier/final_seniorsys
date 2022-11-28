@@ -52,6 +52,31 @@
     </div>
 </div>
 
+<!-- Approve Senior ID Date Pick Modal -->
+<div class="modal fade" id="dateRange" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Pick a date</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      <form id="datePickerSeniorID">
+        <div class="form-group mt-4">
+            <label for="exampleInputEmail1" class="form-label"><b>Date Release</b>&nbsp;<span style="color: red; font-weight: 600;">*</span></label><br>
+            <input type="date" class="form-control" id="datePickerInput" name="dateReleaseSeniorID" required>
+            <input type="hidden" class="form-control" id="idSelected" name="id_item_seniorIDReq" required>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="padding: 10px; ">Close</button>
+        <button id="submitDate" type="button" class="btn btn-custom-default" style="width: 20%;">Submit</button>
+      </div>
+    </div>
+    </form>
+  </div>
+</div>
+
 
 
 
@@ -60,8 +85,25 @@
 
 $(".approveReqSeniorID").on('click',function(){
         id_item = $(this).attr('id');
+        $("#idSelected").val(id_item);
+        $("#dateRange").modal('show');
 
-        Swal.fire({
+    })
+$("#submitDate").click(function(){
+
+  if($("#datePickerInput").val()==""){
+          Swal.fire(
+          'Warning',
+          'Please pick a date.',
+          'warning'
+          )
+        }
+
+      
+  else{
+    var formData = $("#datePickerSeniorID").serialize()+"&approveSelectedSeniorID=approveSelectedSeniorID";
+
+    Swal.fire({
         title: 'Are you sure?',
         text: "Do you want approve this request?",
         icon: 'warning',
@@ -71,11 +113,12 @@ $(".approveReqSeniorID").on('click',function(){
         confirmButtonText: 'Yes, approve it!'
         }).then((result) => {
         if (result.isConfirmed) {
+            $("#dateRange").modal('hide');
             $("#loading").removeClass("d-none");
             $.ajax({
                 type: "POST",
                 url: "../Controller/AdminFunction.php",
-                data: {id_item_seniorIDReq : id_item,approveSelectedSeniorID : "approveSelectedSeniorID"},
+                data: formData,
                 success: function(response){
                     $("#loading").addClass("d-none");
                     if(response == "Success"){
@@ -105,8 +148,8 @@ $(".approveReqSeniorID").on('click',function(){
         }
         })
 
-    })
-
+  }
+})
 
 
     $(".disapproveReqSeniorID").on('click',function(){

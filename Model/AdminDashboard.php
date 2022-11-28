@@ -44,6 +44,66 @@
             }
         }
 
+        public function countPendingPensionReq(){
+            $con = $this->openConnection();
+            $sqlQuery = "SELECT COUNT(`id`) AS `reqPensionCount` FROM `reqpension` WHERE `Status`='Pending'";
+            $stmt = $con->prepare($sqlQuery);
+            $stmt->execute();
+            while($res = $stmt->fetch()){
+                echo $res['reqPensionCount'];
+            }
+        }
+
+        public function countPendingSeniorIDReq(){
+            $con = $this->openConnection();
+            $sqlQuery = "SELECT COUNT(`id`) AS `reqSeniorIDCount` FROM `reqsrid` WHERE `Status`='Pending'";
+            $stmt = $con->prepare($sqlQuery);
+            $stmt->execute();
+            while($res = $stmt->fetch()){
+                echo $res['reqSeniorIDCount'];
+            }
+        }
+
+        public function countPendingBurialAsstReq(){
+            $con = $this->openConnection();
+            $sqlQuery = "SELECT COUNT(`id`) AS `reqBurialAsstCount` FROM `reqburialasst` WHERE `BurStatus`='Pending'";
+            $stmt = $con->prepare($sqlQuery);
+            $stmt->execute();
+            while($res = $stmt->fetch()){
+                echo $res['reqBurialAsstCount'];
+            }
+        }
+
+        public function countApprovedPensionReq(){
+            $con = $this->openConnection();
+            $sqlQuery = "SELECT COUNT(`id`) AS `reqApprovePensionCount` FROM `reqpension` WHERE `Status`='Approve'";
+            $stmt = $con->prepare($sqlQuery);
+            $stmt->execute();
+            while($res = $stmt->fetch()){
+                echo $res['reqApprovePensionCount'];
+            }
+        }
+
+        public function countApprovedSeniorIDReq(){
+            $con = $this->openConnection();
+            $sqlQuery = "SELECT COUNT(`id`) AS `reqApproveSeniorIDCount` FROM `reqsrid` WHERE `Status`='Approve'";
+            $stmt = $con->prepare($sqlQuery);
+            $stmt->execute();
+            while($res = $stmt->fetch()){
+                echo $res['reqApproveSeniorIDCount'];
+            }
+        }
+
+        public function countApprovedBurialReq(){
+            $con = $this->openConnection();
+            $sqlQuery = "SELECT COUNT(`id`) AS `reqApproveBurialCount` FROM `reqburialasst` WHERE `BurStatus`='Approve'";
+            $stmt = $con->prepare($sqlQuery);
+            $stmt->execute();
+            while($res = $stmt->fetch()){
+                echo $res['reqApproveBurialCount'];
+            }
+        }
+
 
     }
 

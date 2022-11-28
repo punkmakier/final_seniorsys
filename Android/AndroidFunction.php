@@ -3,6 +3,9 @@
     require_once '../Model/SeniorRegistration.php';
     require_once '../Model/UpdateBasicInfo.php';
     require_once '../Model/PartnerInformation.php';
+    require_once '../Model/Services.php';
+
+    $services = new Services;
    
 
     $androidRequest = new AndroidRequest;
@@ -159,8 +162,6 @@
     }
 
 
-
-
     else if(isset($_GET['emergencyInfoUpdateID'])){
         $uid = $_GET['emergencyInfoUpdateID'];
         $androidRequest->viewEmergencyAllInfoByUser($uid);
@@ -181,8 +182,57 @@
 
     }
 
+    else if(isset($_POST['pen_id']) && isset($_POST['pen_srid']) && isset($_POST['pen_srsign'])){
+        $id = $_POST['pen_id'];
+
+        $SeniorID = "SeniorID-Mobile-".date("d-m-Y")."-".time()."-".rand(10000, 100000).".jpg";
+        $Signatures = "Signatures-Mobile-".date("d-m-Y")."-".time()."-".rand(10000, 100000).".jpg";
+
+        if($services->uploadReqestPension($id,$SeniorID,$Signatures)){
+            
+            file_put_contents("../assets/SeniorID/".$SeniorID, base64_decode($_POST['pen_srid']));
+            file_put_contents("../assets/Signatures/".$Signatures, base64_decode($_POST['pen_srsign']));
+            echo "Success";
+
+        }else{echo "Failed";}
+    }
+
+
+
+
+    else if(isset($_POST['sen_id']) && isset($_POST['sen_picCopy']) && isset($_POST['sen_birthCert'])){
+        $id = $_POST['sen_id'];
+        $picCopy = "PictureCopy-Mobile-".date("d-m-Y")."-".time()."-".rand(10000, 100000).".jpg";
+        $birthCert = "validCert-Mobile-".date("d-m-Y")."-".time()."-".rand(10000, 100000).".jpg";
+
+        if($services->uploadReqestSeniorID($id,$picCopy,$birthCert)){
+            
+            file_put_contents("../assets/PictureCopy/".$picCopy, base64_decode($_POST['sen_picCopy']));
+            file_put_contents("../assets/ValidCertificate/".$birthCert, base64_decode($_POST['sen_birthCert']));
+            echo "Success";
+
+        }else{echo "Failed";}
+    }
+
+    else if(isset($_POST['bur_id']) && isset($_POST['bur_cod']) && isset($_POST['bur_senID']) && isset($_POST['bur_deathCert'])){
+        $id = $_POST['bur_id'];
+        $cod = $_POST['bur_cod'];
+        $burSenID = "BurialSeniorID-Mobile-".date("d-m-Y")."-".time()."-".rand(10000, 100000).".jpg";
+        $burDeathcert = "BurialAsstCOD-Mobile-".date("d-m-Y")."-".time()."-".rand(10000, 100000).".jpg";
+
+        if($services->uploadReqestBurial($id,$burSenID,$burDeathcert,$cod)){
+            file_put_contents("../assets/BurialSeniorID/".$burSenID, base64_decode($_POST['bur_senID']));
+            file_put_contents("../assets/BurialCOD/".$burDeathcert, base64_decode($_POST['bur_deathCert']));
+            echo "Success";
+
+        }else{echo "Failed";}
+    }
     
 
+
+    else if(isset($_GET['userIDNotification'])){
+        $androidRequest->viewAllNotifications($_GET['userIDNotification']);
+    }
 
     
 

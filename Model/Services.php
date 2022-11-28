@@ -27,7 +27,7 @@
         }
         public function uploadReqestBurial($uniqueID,$seniorID,$deathCert, $cod){
             $con = $this->openConnection();
-            $sqlQuery = $con->prepare("UPDATE `reqburialasst` SET `SeniorID`='$seniorID', `DeathCert`='$deathCert',`CauseOfDeath`='$cod', `DateRequested`= now(), `BurStatus`='N/A' WHERE `UserUniqueID`='$uniqueID'");
+            $sqlQuery = $con->prepare("UPDATE `reqburialasst` SET `SeniorID`='$seniorID', `DeathCert`='$deathCert',`CauseOfDeath`='$cod', `DateRequested`= now(), `BurStatus`='Pending' WHERE `UserUniqueID`='$uniqueID'");
             if($sqlQuery->execute()){
                 return true;
             }else{
@@ -59,8 +59,9 @@
                     
                     
                     ";
-                    return true;
+                    
                 }
+                return true;
             }else{
                 return false;
             }
@@ -89,8 +90,9 @@
                     
                     
                     ";
-                    return true;
+                    
                 }
+                return true;
             }else{
                 return false;
             }
@@ -102,7 +104,7 @@
 
         public function showRequestBurialAsst(){
             $con = $this->openConnection();
-            $sqlQuery =  $con->prepare("SELECT sr.FirstName, sr.MiddleName, sr.LastName, sr.Address, sr.Age, sr.Gender, sr.UserUniqueID, r.SeniorID, r.DeathCert, r.CauseOfDeath FROM `srpersonalinfo` AS sr INNER JOIN `reqburialasst` as r ON sr.UserUniqueID = r.UserUniqueID WHERE r.BurStatus = 'N/A'" );
+            $sqlQuery =  $con->prepare("SELECT sr.FirstName, sr.MiddleName, sr.LastName, sr.Address, sr.Age, sr.Gender, sr.UserUniqueID, r.SeniorID, r.DeathCert, r.CauseOfDeath FROM `srpersonalinfo` AS sr INNER JOIN `reqburialasst` as r ON sr.UserUniqueID = r.UserUniqueID WHERE r.BurStatus = 'Pending'" );
             $sqlQuery->execute();
 
             if($sqlQuery->rowCount() > 0){
@@ -124,8 +126,9 @@
                     
                     
                     ";
-                    return true;
+                    
                 }
+                return true;
             }else{
                 return false;
             }
@@ -135,7 +138,6 @@
             $con = $this->openConnection();
             $sqlQuery =  $con->prepare("SELECT sr.FirstName, sr.MiddleName, sr.LastName, sr.Address, sr.Age, sr.Gender, sr.UserUniqueID, r.SeniorID, r.DeathCert, r.CauseOfDeath FROM `srpersonalinfo` AS sr INNER JOIN `reqburialasst` as r ON sr.UserUniqueID = r.UserUniqueID WHERE r.BurStatus = 'Approve'" );
             $sqlQuery->execute();
-
             if($sqlQuery->rowCount() > 0){
                 while($res = $sqlQuery->fetch()){
                     echo "
@@ -147,19 +149,19 @@
                             <td class='text-center'>$res[CauseOfDeath]</td>
                             <td class='text-center'><img src='../assets/BurialSeniorID/$res[SeniorID]' style='width: 80px; cursor: pointer;' class='zoomable'></td>
                             <td class='text-center'><img src='../assets/BurialCOD/$res[DeathCert]' style='width: 80px; cursor: pointer;' class='zoomable'></td>
-                        </tr>
-                    
-                    
+                        </tr>     
                     ";
-                    return true;
+                    
                 }
+                return true;
+
             }else{
                 return false;
             }
         }
 
 
-        public function approveBurialReq($id){
+        public function approveBurialReq($id,$date){
             $con = $this->openConnection();
             $stmt = $con->prepare("UPDATE `reqburialasst` SET `BurStatus`='Approve' WHERE `UserUniqueID`='$id'");
             if($stmt->execute()){
@@ -169,10 +171,16 @@
                 $emailAdd = ($fetchData['Email']);
 
                 $title = "Burial Assitance Request";
-                $Body = "Your Burial Assistance request was <b style='color: green;'>Approve</b>. Your request will be release this date on 2022-30-11";
+                $Body1 = "Your Burial Assistance request was Approve. Your request will be release this date on ".$date;
+                $Body = "Your Burial Assistance request was <b style='color: green;'>Approve</b>. Your request will be release this date on <b>".$date."</b>";
+                
+                
+                $sqlQuery1 =  $con->prepare("INSERT INTO `notifications` (`UserUniqueID`,`Title`,`Message`,`Status`) VALUES('$id','$title','$Body1','Approved')");
+                $sqlQuery1->execute();
+                
                 $mail = new PHPMailer;
 
-                
+            
                 $mail->isSMTP();                                      // Set mailer to use SMTP
                 $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
                 $mail->SMTPAuth = true;                               // Enable SMTP authentication
@@ -209,7 +217,7 @@
         
         public function disapproveBurialReq($id){
             $con = $this->openConnection();
-            $stmt = $con->prepare("UPDATE `reqburialasst` SET `BurStatus`='Dispprove' WHERE `UserUniqueID`='$id'");
+            $stmt = $con->prepare("UPDATE `reqburialasst` SET `BurStatus`='Disapprove' WHERE `UserUniqueID`='$id'");
             if($stmt->execute()){
                 $sqlQuery =  $con->prepare("SELECT sr.Email FROM `srpersonalinfo` AS sr INNER JOIN `reqburialasst` as r ON sr.UserUniqueID = '$id'");
                 $sqlQuery->execute();
@@ -220,6 +228,9 @@
                 $Body = "Your Burial Assistance request was <b style='color: red;'>Disapprove</b>. ";
                 $mail = new PHPMailer;
 
+                $Body1 = "Your Burial Assitance Request was Disapprove.";
+                $sqlQuery1 =  $con->prepare("INSERT INTO `notifications` (`UserUniqueID`,`Title`,`Message`,`Status`) VALUES('$id','$title','$Body1','Disapproved')");
+                $sqlQuery1->execute();
                 
                 $mail->isSMTP();                                      // Set mailer to use SMTP
                 $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
@@ -255,7 +266,7 @@
 
 
 
-        public function approvePensioReq($id){
+        public function approvePensioReq($id,$date){
             $con = $this->openConnection();
             $stmt = $con->prepare("UPDATE `reqpension` SET `Status`='Approve' WHERE `UserUniqueID`='$id'");
             if($stmt->execute()){
@@ -268,9 +279,13 @@
                 $stmt2->execute();
 
                 $title = "Pension Request";
-                $Body = "Your Pension Request was <b style='color: green;'>Approve</b>. Your request will be release this date on 2022-30-11";
+                $Body = "Your Pension Request was <b style='color: green;'>Approve</b>. Your request will be release this date on <b>".$date."</b>";
                 $mail = new PHPMailer;
 
+                $Body1 = "Your Pension request was Approve. Your request will be release this date on ".$date;
+
+                $sqlQuery1 =  $con->prepare("INSERT INTO `notifications` (`UserUniqueID`,`Title`,`Message`,`Status`) VALUES('$id','$title','$Body1','Approved')");
+                $sqlQuery1->execute();
                 
                 $mail->isSMTP();                                      // Set mailer to use SMTP
                 $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
@@ -320,6 +335,9 @@
                 $Body = "Your Pension Request was <b style='color: red;'>Disapprove</b>.";
                 $mail = new PHPMailer;
 
+                $Body1 = "Your Pension Request was Disapprove.";
+                $sqlQuery1 =  $con->prepare("INSERT INTO `notifications` (`UserUniqueID`,`Title`,`Message`,`Status`) VALUES('$id','$title','$Body1','Disapproved')");
+                $sqlQuery1->execute();
                 
                 $mail->isSMTP();                                      // Set mailer to use SMTP
                 $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
@@ -354,7 +372,7 @@
 
 
 
-        public function approveSeniorIDReq($id){
+        public function approveSeniorIDReq($id,$date){
             $con = $this->openConnection();
             $stmt = $con->prepare("UPDATE `reqsrid` SET `Status`='Approve' WHERE `UserUniqueID`='$id'");
             if($stmt->execute()){
@@ -364,9 +382,13 @@
                 $emailAdd = ($fetchData['Email']);
 
                 $title = "Senior ID Request";
-                $Body = "Your Senior ID Request was <b style='color: green;'>Approve</b>. Your request will be release this date on 2022-30-11";
+                $Body = "Your Senior ID Request was <b style='color: green;'>Approve</b>. Your request will be release this date on <b>".$date."</b>";
                 $mail = new PHPMailer;
 
+                $Body1 = "Your Senior ID request was Approve. Your request will be release this date on ".$date;
+
+                $sqlQuery1 =  $con->prepare("INSERT INTO `notifications` (`UserUniqueID`,`Title`,`Message`,`Status`) VALUES('$id','$title','$Body1','Approved')");
+                $sqlQuery1->execute();
                 
                 $mail->isSMTP();                                      // Set mailer to use SMTP
                 $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
@@ -410,10 +432,13 @@
                 $emailAdd = ($fetchData['Email']);
 
                 $title = "Senior ID Request";
-                $Body = "Your Senior ID Request was <b style='color: red;'>Dispprove</b>.";
+                $Body = "Your Senior ID Request was <b style='color: red;'>Disapprove</b>.";
                 $mail = new PHPMailer;
 
-                
+                $Body1 = "Your Senior ID Request was Disapprove.";
+                $sqlQuery1 =  $con->prepare("INSERT INTO `notifications` (`UserUniqueID`,`Title`,`Message`,`Status`) VALUES('$id','$title','$Body1','Disapproved')");
+                $sqlQuery1->execute();
+
                 $mail->isSMTP();                                      // Set mailer to use SMTP
                 $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
                 $mail->SMTPAuth = true;                               // Enable SMTP authentication

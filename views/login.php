@@ -233,7 +233,6 @@ if(isset($_SESSION['userUniqueID'])){
                     url: "../Controller/SeniorCitizenFunction.php",
                     data: formData,
                     success: function(data){
-                        alert(data)
                         if(data == "NotMatch"){
                             Swal.fire(
                             'Failed!',

@@ -30,7 +30,7 @@
 
         public function showAllSeniorAccount(){
             $con = $this->openConnection();
-            $sqlQuery = "SELECT sr.* FROM `reqburialasst` as r INNER JOIN `srpersonalinfo` as sr ON r.`UserUniqueID`= sr.`UserUniqueID` WHERE r.BurStatus = 'N/A'";
+            $sqlQuery = "SELECT sr.* FROM `reqburialasst` as r INNER JOIN `srpersonalinfo` as sr ON r.`UserUniqueID`= sr.`UserUniqueID` WHERE r.BurStatus = 'N/A' OR r.BurStatus = 'Pending'";
             $stmt = $con->prepare($sqlQuery);
             $stmt->execute();
             if($stmt->rowCount() > 0){
@@ -38,15 +38,18 @@
                     $bday = substr($res['Birthdate'],5,2);
                     $monthNum  = $bday;
                     $dateObj   = DateTime::createFromFormat('!m', $monthNum);
-                    $monthName = $dateObj->format('F'); // March
+                    $monthName = $dateObj->format('M'); 
                     echo "<tr>
                     <td class='text-center'>".$res['FirstName']." ".substr($res['MiddleName'],0,1).". ".$res['LastName']."</td>
                     <td class='text-center'>$res[Address]</td>
                     <td class='text-center'>$res[Age]</td>
                     <td class='text-center'>$res[Gender]</td>
                     <td class='text-center'>$res[Status]</td>
-                    <td class='text-center'>".$monthName."</td>
-                    <td class='text-center'>$res[PensionerStatus]</td>
+                    <td class='text-center'>".$monthNum."</td>
+                    <td class='text-center'><b style='padding: 3px 6px; background-color:";
+                    
+                    if($res['PensionerStatus'] == "Yes") { echo "green;";} else{echo "red;";}
+                    echo "color: white; border-radius: 10px;'>$res[PensionerStatus]</b></td>
                     <td class='text-center'>
                         <a class='btn btn-primary viewSelectedSr' id='$res[UserUniqueID]'><i class='fa-solid fa-eye'></i></a> 
                         <a class='btn btn-danger deleteThisSrCitizenAcct' id='$res[UserUniqueID]'><i class='fa-solid fa-trash'></i></a>

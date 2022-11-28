@@ -1,8 +1,8 @@
 <div class="container p-5">
-    <h3>Manage Pension</h3>
+    <h3>Manage Disease</h3>
 
     <div class="panel">
-       <h5 class="mb-3">Pension Request List</h5>
+       <h5 class="mb-3">Disease List</h5>
        <table class="table table-striped" id="myTable">
             <thead class="bg-dark text-white">
                 <tr>

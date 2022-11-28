@@ -23,7 +23,7 @@ class Pagination
     private $links_between;
     /* Link variables in the link ex &&id=10 */
     private $url_vars;
-    public  function __construct($table, $page, $limit = null, $links_between = null, $url_vars = null,  $where = null)
+    public  function __construct($table, $page, $limit = null,$where = null, $links_between = null, $url_vars = null  )
     {
         $this->url_vars      = $url_vars;
         $this->links_between = $links_between;

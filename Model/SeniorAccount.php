@@ -979,9 +979,22 @@ session_start();
         }
 
 
+        public function showNotifcationTotal($id){
+            $con = $this->openConnection();
+            $sqlQuery = "SELECT COUNT(id) as countTotal FROM `notifications` WHERE `UserUniqueID`='$id'";
+            $stmt = $con->prepare($sqlQuery);
+            $stmt->execute();
+            if($stmt->rowCount() > 0){
+                while($res = $stmt->fetch()){
+                    echo $res['countTotal'];
+                } 
+            }
+            else{
+                echo "NoAccount";
+            }
+        }
+
         
-
-
     }
 
 

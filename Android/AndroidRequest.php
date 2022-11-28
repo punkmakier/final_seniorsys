@@ -286,6 +286,37 @@
         }
 
 
+
+
+
+        public function viewAllNotifications($uid){
+            $con = $this->openConnection();
+            $stmt = $con->prepare("SELECT * FROM `notifications` WHERE `UserUniqueID`='$uid'");
+            $stmt->execute();
+            if($stmt->rowCount() > 0){
+                $showData = array();
+                while($res = $stmt->fetch()){
+                    header("Content-Type: JSON");
+                    $temp = array(
+                        "Status" => $res['Status'],
+                        "Title" => $res['Title'],
+                        "Message" => $res['Message'],
+                        "DateAdded" => $res['DateAdded']
+                    );
+
+                    array_push($showData,$temp);
+                    
+    
+                }
+
+
+                echo json_encode($showData, JSON_PRETTY_PRINT);
+
+                
+            }else{
+                echo "Failed";
+            }
+        }
         
 
 

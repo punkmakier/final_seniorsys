@@ -27,27 +27,27 @@
     </div>
     <div class="count-cards">
         <i class="fa-solid fa-users"></i>
-        <label>Pending Pension Req<br><b>11</b></label>
+        <label>Pending Pension Req<br><b><?php $count->countPendingPensionReq();?></b></label>
     </div>
     <div class="count-cards">
         <i class="fa-solid fa-users"></i>
-        <label>Pending ID Req<br><b>11</b></label>
+        <label>Pending ID Req<br><b><?php $count->countPendingSeniorIDReq();?></b></label>
     </div>
     <div class="count-cards">
         <i class="fa-solid fa-users"></i>
-        <label style="font-size: 0.9rem;">Pending Burial Asst. Req<br><b>11</b></label>
+        <label style="font-size: 0.9rem;">Pending Burial Asst. Req<br><b><?php $count->countPendingBurialAsstReq();?></b></label>
     </div>
    
     <div class="count-cards">
         <i class="fa-solid fa-users"></i>
-        <label>Total Pension Appr<br><b>11</b></label>
+        <label>Total Pension Appr<br><b><?php $count->countApprovedPensionReq();?></b></label>
     </div>
     <div class="count-cards">
         <i class="fa-solid fa-users"></i>
-        <label>Total ID Appr<br><b>11</b></label>
+        <label>Total ID Appr<br><b><?php $count->countApprovedSeniorIDReq();?></b></label>
     </div>
     <div class="count-cards">
         <i class="fa-solid fa-users"></i>
-        <label>Total Burial Asst. Appr<br><b>11</b></label>
+        <label>Total Burial Asst. Appr<br><b><?php $count->countApprovedBurialReq();?></b></label>
     </div>
 </div>
